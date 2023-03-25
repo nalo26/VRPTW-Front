@@ -9,33 +9,39 @@ def parse_header(content):
 
 
 def parse_depots(content):
-    data = {}
+    data = []
     for line in content.split("\n")[1:]:
         id_name, x, y, ready_time, due_time = line.split()
-        data[id_name] = {
-            "x": int(x),
-            "y": int(y),
-            "ready_time": int(ready_time),
-            "due_time": int(due_time),
-        }
+        data.append(
+            {
+                "id_name": id_name,
+                "x": int(x),
+                "y": int(y),
+                "ready_time": int(ready_time),
+                "due_time": int(due_time),
+            }
+        )
 
     return data
 
 
 def parse_clients(content):
-    data = {}
+    data = []
     for line in content.split("\n")[1:]:
         if line == "":
             continue
         id_name, x, y, ready_time, due_time, demand, service = line.split()
-        data[id_name] = {
-            "x": int(x),
-            "y": int(y),
-            "ready_time": int(ready_time),
-            "due_time": int(due_time),
-            "demand": int(demand),
-            "service": int(service),
-        }
+        data.append(
+            {
+                "id_name": id_name,
+                "x": int(x),
+                "y": int(y),
+                "ready_time": int(ready_time),
+                "due_time": int(due_time),
+                "demand": int(demand),
+                "service": int(service),
+            }
+        )
 
     return data
 

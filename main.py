@@ -6,7 +6,7 @@ PORT = 5000
 
 
 def main():
-    data = parse("data/data101.vrp")
+    data = parse("datas/data101.vrp")
     rq.post(f"http://{IP}:{PORT}/", json=data)
 
 

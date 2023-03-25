@@ -13,7 +13,6 @@ def parse_depots(content):
     for line in content.split("\n")[1:]:
         id_name, x, y, ready_time, due_time = line.split()
         data[id_name] = {
-            "id": id_name,
             "x": int(x),
             "y": int(y),
             "ready_time": int(ready_time),
@@ -30,7 +29,6 @@ def parse_clients(content):
             continue
         id_name, x, y, ready_time, due_time, demand, service = line.split()
         data[id_name] = {
-            "id": id_name,
             "x": int(x),
             "y": int(y),
             "ready_time": int(ready_time),
@@ -42,15 +40,12 @@ def parse_clients(content):
     return data
 
 
-def parse(file):
+def parse(file_path):
     data = {}
-    with open(file, "r") as f:
+    with open(file_path, "r") as f:
         content = f.read().split("\n\n")
-        data["header"] = parse_header(content[0])
+        data["headers"] = parse_header(content[0])
         data["depots"] = parse_depots(content[1])
         data["clients"] = parse_clients(content[2])
 
     return data
-
-
-print(parse("datas/data101.vrp"))

@@ -8,20 +8,15 @@ def parse_header(content):
     return data
 
 
-def parse_depots(content):
-    data = []
-    for line in content.split("\n")[1:]:
-        id_name, x, y, ready_time, due_time = line.split()
-        data.append(
-            {
-                "id_name": id_name,
-                "x": int(x),
-                "y": int(y),
-                "ready_time": int(ready_time),
-                "due_time": int(due_time),
-            }
-        )
-
+def parse_depot(content):
+    id_name, x, y, ready_time, due_time = content.split("\n")[1].split()
+    data = {
+        "id_name": id_name,
+        "x": int(x),
+        "y": int(y),
+        "ready_time": int(ready_time),
+        "due_time": int(due_time),
+    }
     return data
 
 
@@ -46,12 +41,11 @@ def parse_clients(content):
     return data
 
 
-def parse(file_path):
+def parse(content):
     data = {}
-    with open(file_path, "r") as f:
-        content = f.read().split("\n\n")
-        data["headers"] = parse_header(content[0])
-        data["depots"] = parse_depots(content[1])
-        data["clients"] = parse_clients(content[2])
+    content = content.split("\n\n")
+    data["headers"] = parse_header(content[0])
+    data["clients"] = parse_clients(content[2])
+    data["clients"].insert(0, parse_depot(content[1]))
 
     return data

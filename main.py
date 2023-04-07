@@ -17,7 +17,7 @@ server = Flask(__name__)
 app = Dash(__name__, server=server, external_stylesheets=external_stylesheets)
 
 graph = None
-graph_data = None
+local_graph_data = None
 remote_graph_data = None
 
 app.layout = html.Div(
@@ -53,12 +53,12 @@ def receive_json():
 
 @app.callback(Output("hidden-output", "children"), Input("input_file", "contents"))
 def update_output(content):
-    global graph_data
+    global local_graph_data
     if content is not None:
         content_type, content_string = content.split(",")
         decoded = base64.b64decode(content_string)
         data = parse(decoded.decode("utf-8"))
-        graph_data = data
+        local_graph_data = data
         send_json(data)
         return "Updating..."
 
@@ -69,7 +69,39 @@ def get_graph(n_intervals):
     if remote_graph_data is None:
         return graph
 
-    x = [p["x"] for p in remote_graph_data["clients"]]
+    traces = []
+
+    routes = remote_graph_data["routes"]
+    colors = ["red", "green", "blue", "yellow", "orange", "purple", "pink", "brown"]
+    for i, route in enumerate(routes):
+        x = [c.get("x") for c in route["clients"]]
+        y = [c.get("y") for c in route["clients"]]
+        traces.append(
+            go.Scatter(
+                x=x,
+                y=y,
+                mode="lines+markers",
+                line=dict(width=2, color=colors[i % len(colors)]),
+                name=f"Route #{i+1}",
+            )
+        )
+
+    ids = [p.get("id_name") for p in local_graph_data["clients"]]
+    x = [p.get("x") for p in local_graph_data["clients"]]
+    y = [p.get("y") for p in local_graph_data["clients"]]
+    traces.append(
+        go.Scatter(
+            x=x,
+            y=y,
+            mode="markers",
+            marker=dict(color="black"),
+            name="Clients",
+            text=ids,
+        )
+    )
+
+    graph = dcc.Graph(figure=go.Figure(data=traces))
+    return graph
 
 
 if __name__ == "__main__":

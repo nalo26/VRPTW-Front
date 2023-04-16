@@ -10,11 +10,16 @@ from dash.dependencies import Input, Output
 from file_parser import parse
 
 IP = "127.0.0.1"
-PORT = 65432
+PORT = 8080
 
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 server = Flask(__name__)
-app = Dash(__name__, server=server, external_stylesheets=external_stylesheets)
+app = Dash(
+    __name__,
+    server=server,
+    external_stylesheets=external_stylesheets,
+    update_title=None,
+)
 
 graph = None
 local_graph_data = None
@@ -39,7 +44,9 @@ app.layout = html.Div(
 
 
 def send_json(data: dict):
-    rq.post(f"http://{IP}:{PORT}", json=data)
+    print("Sending data")
+    req = rq.post(f"http://{IP}:{PORT}/send", json=data)
+    print(req.status_code)
 
 
 @server.route("/update_graph", methods=["POST"])

@@ -108,9 +108,20 @@ def get_graph(n_intervals):
             )
         )
 
-    ids = [p.get("id_name") for p in local_graph_data["clients"]]
-    x = [p.get("x") for p in local_graph_data["clients"]]
-    y = [p.get("y") for p in local_graph_data["clients"]]
+    traces.append(
+        go.Scatter(
+            x=[local_graph_data["clients"][0]["x"]],
+            y=[local_graph_data["clients"][0]["y"]],
+            mode="markers",
+            marker=dict(color="black", size=15, symbol="star"),
+            name="Depot",
+            text="Depot",
+        )
+    )
+
+    ids = [p.get("id_name") for p in local_graph_data["clients"][1:]]
+    x = [p.get("x") for p in local_graph_data["clients"][1:]]
+    y = [p.get("y") for p in local_graph_data["clients"][1:]]
     traces.append(
         go.Scatter(
             x=x,

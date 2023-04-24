@@ -35,6 +35,12 @@ app.layout = html.Div(
         ),
         html.Div(id="hidden-output", style={"display": "none"}),
         html.Div(id="output-graph"),
+        html.Div(
+            [
+                html.Span("Fitness: "),
+                html.Span(id="output-fitness"),
+            ]
+        ),
         dcc.Interval(
             id="graph-update",
             interval=1000,
@@ -45,7 +51,7 @@ app.layout = html.Div(
 
 def send_json(data: dict):
     print("Sending data")
-    req = rq.post(f"http://{IP}:{PORT}/send", json=data)
+    req = rq.post(f"http://{IP}:{PORT}/random", json=data)
     print(req.status_code)
 
 
@@ -70,6 +76,15 @@ def update_output(content):
         return "Updating..."
 
 
+@app.callback(
+    Output("output-fitness", "children"), Input("graph-update", "n_intervals")
+)
+def get_fitness(n_intervals):
+    if remote_graph_data is None:
+        return "N/A"
+    return remote_graph_data["fitness"]
+
+
 @app.callback(Output("output-graph", "children"), Input("graph-update", "n_intervals"))
 def get_graph(n_intervals):
     global graph
@@ -81,8 +96,8 @@ def get_graph(n_intervals):
     routes = remote_graph_data["routes"]
     colors = ["red", "green", "blue", "yellow", "orange", "purple", "pink", "brown"]
     for i, route in enumerate(routes):
-        x = [c.get("x") for c in route["clients"]]
-        y = [c.get("y") for c in route["clients"]]
+        x = [c.get("x") for c in route["route"]]
+        y = [c.get("y") for c in route["route"]]
         traces.append(
             go.Scatter(
                 x=x,

@@ -43,7 +43,7 @@ def parse_clients(content):
 
 def parse(content):
     data = {}
-    content = content.split("\n\n")
+    content = content.split("\r\n\r\n") if "\r" in content else content.split("\n\n")
     data["headers"] = parse_header(content[0])
     data["clients"] = parse_clients(content[2])
     data["clients"].insert(0, parse_depot(content[1]))

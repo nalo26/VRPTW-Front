@@ -51,7 +51,7 @@ app.layout = html.Div(
 
 def send_json(data: dict):
     print("Sending data")
-    req = rq.post(f"http://{IP}:{PORT}/random", json=data)
+    req = rq.post(f"http://{IP}:{PORT}/exchange/intra", json=data)
     print(req.status_code)
 
 

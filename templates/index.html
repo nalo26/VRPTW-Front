@@ -1,0 +1,22 @@
+<html>
+  <header>
+    <title>VRP</title>
+  </header>
+  <body>
+    <h1>VRP</h1>
+    <form
+      action="/front/create_graph"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <label for="file">File</label>
+      <input id="file" name="file" type="file" accept=".vrp" />
+      <button>Upload</button>
+    </form>
+    <div class="output-graph"></div>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/main.js') }}"
+    ></script>
+  </body>
+</html>

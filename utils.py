@@ -7,5 +7,5 @@ PORT = 8080
 
 def send_json(data: dict):
     print("Sending data")
-    req = rq.post(f"http://{IP}:{PORT}/exchange/intra", json=data)
+    req = rq.post(f"http://{IP}:{PORT}/relocate/inter", json=data)
     print(req.status_code)

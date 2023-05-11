@@ -30,7 +30,9 @@ def update_output():
 
 @bp.route("/get_graph", methods=["GET"])
 def get_graph():
-    remote_graphs: list = cache.get("remote_graphs")
-    graph = remote_graphs.pop()
+    remote_graphs: list = cache.get("remote_graphs") or []
+    if len(remote_graphs) == 0:
+        return "No graph", 400
+    graph = remote_graphs.pop(0)
     cache.set("remote_graphs", remote_graphs)
     return graph, 200

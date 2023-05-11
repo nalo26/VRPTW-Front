@@ -7,7 +7,10 @@
     <label for="file">File</label>
     <input id="file" name="file" type="file" accept=".vrp" />
     <button id="upload">Upload</button>
-    <div class="output-graph"></div>
+    <div class="graph" style="width: 100%; height: 80%">
+      <canvas id="graph"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script
       type="text/javascript"
       src="{{ url_for('static', filename='js/main.js') }}"

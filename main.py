@@ -23,9 +23,9 @@ back_api.init(cache)
 
 @app.route("/")
 def index():
+    cache.set("remote_graphs", [])
     return render_template("index.html")
 
 
 if __name__ == "__main__":
-    cache.set("remote_graphs", [])
     app.run(host="127.0.0.1", port=8050, debug=True)

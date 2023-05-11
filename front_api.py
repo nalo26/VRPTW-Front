@@ -1,9 +1,16 @@
-from flask import Blueprint, request, g
+from flask import Blueprint, request
+from flask_caching import Cache
 
 from file_parser import parse
 from utils import send_json
 
 bp = Blueprint("front", __name__, url_prefix="/front")
+cache = None
+
+
+def init(_cache: Cache):
+    global cache
+    cache = _cache
 
 
 @bp.route("/create_graph", methods=["POST"])
@@ -16,6 +23,6 @@ def update_output():
         return "Wrong file format", 400
 
     data = parse(upload_file.read().decode("utf-8"))
-    g.local_graph_data = data
+    cache.set("local_graph_data", data)
     send_json(data)
     return "OK", 200

@@ -13,5 +13,7 @@ def init(_cache: Cache):
 @bp.route("/update_graph", methods=["POST"])
 def update_graph():
     data = request.get_json()
-    cache.set("remote_graph_data", data)
+    remote_graphs = cache.get("remote_graphs")
+    remote_graphs.append(data)
+    cache.set("remote_graphs", remote_graphs)
     return "OK", 200

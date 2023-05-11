@@ -23,6 +23,14 @@ def update_output():
         return "Wrong file format", 400
 
     data = parse(upload_file.read().decode("utf-8"))
-    cache.set("local_graph_data", data)
+    cache.set("graph_base", data)
     send_json(data)
-    return "OK", 200
+    return data, 200
+
+
+@bp.route("/get_graph", methods=["GET"])
+def get_graph():
+    remote_graphs: list = cache.get("remote_graphs")
+    graph = remote_graphs.pop()
+    cache.set("remote_graphs", remote_graphs)
+    return graph, 200

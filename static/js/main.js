@@ -34,7 +34,7 @@ function create_graph(base) {
                 {
                     type: 'scatter',
                     label: 'Clients',
-                    data: base.clients
+                    data: base.clients,
                 }
             ]
         },
@@ -76,7 +76,15 @@ function update_graph(chart, data) {
             type: 'line',
             label: "Route #" + id,
             data: data.routes[id].route,
-            tension: 0.1
+            tension: 0.1,
+            borderColor: [
+                'rgba(54, 162, 235, 0.7)',
+                'rgba(255, 99, 132, 0.7)',
+                'rgba(75, 192, 192, 0.7)',
+                'rgba(255, 159, 64, 0.7)',
+                'rgba(153, 102, 255, 0.7)',
+                'rgba(255, 205, 86, 0.7)',
+            ],
         }
         chart.data.datasets.push(route_data);
     }

@@ -16,7 +16,7 @@ window.addEventListener("load", () => {
             .then((response) => { return response.json(); })
             .then((data) => { update_graph(chart, data); })
             .catch(() => { return; });
-    }, 1000);
+    }, 500);
 });
 
 function create_graph(base) {
@@ -66,6 +66,7 @@ function create_graph(base) {
 }
 
 function update_graph(chart, data) {
+    document.querySelector(".fitness > p").innerHTML = data.fitness;
     let clients = chart.data.datasets[0];
     chart.data.datasets.length = 0;
     chart.data.datasets.push(clients);

@@ -11,3 +11,7 @@ p {
     display: inline-block;
 }
 
+.settings {
+    border: 1px solid black;
+    padding: 20px;
+}

@@ -1,4 +1,24 @@
+const algorithms = {
+    "random": undefined,
+    "exchange/intra": undefined,
+    "exchange/inter": undefined,
+    "relocate/intra": undefined,
+    "relocate/inter": undefined,
+    "twoOpt/intra": undefined,
+    "tabouSearch": {
+        "nbIter": '<input type="number" min="0" name="%p" id="%p" default="500" />',
+        "tabouSize": '<input type="number" min="0" name="%p" id="%p" default="30" />',
+        "methods": '<select id="%p" name="%p" multiple>%o</select>',
+    },
+    "annealing": {
+        "methods": '<select id="%p" name="%p" multiple>%o</select>',
+    },
+}
+
+
 window.addEventListener("load", () => {
+    handle_algorithms();
+
     var graph_base = null;
     var chart = null;
     document.querySelector("#upload").addEventListener("click", () => {
@@ -89,4 +109,39 @@ function update_graph(chart, data) {
         chart.data.datasets.push(route_data);
     }
     chart.update();
+}
+
+function handle_algorithms() {
+    let dropdown = document.querySelector("#algorithm");
+    for (let algo in algorithms) {
+        let option = document.createElement("option");
+        option.setAttribute('value', algo);
+        option.innerText = algo;
+        dropdown.appendChild(option);
+    }
+    document.querySelector("#algorithm").addEventListener("change", e => {
+        let algo = e.target.value;
+        let algo_params = algorithms[algo];
+        let params = document.querySelector("#params");
+        params.innerHTML = "";
+        if (algo_params == undefined) return;
+        for (let [pname, phtml] of Object.entries(algo_params)) {
+            let param = document.createElement("div");
+            param.classList.add("param");
+            let label = document.createElement("label");
+            label.setAttribute("for", pname);
+            label.innerText = pname.charAt(0).toUpperCase() + pname.slice(1);
+            param.appendChild(label);
+            param.innerHTML += phtml.replaceAll("%p", pname);
+            if (phtml.includes("%o")) {
+                for (let a_name of Object.keys(algorithms).slice(0, -2)) {
+                    let option = document.createElement("option");
+                    option.setAttribute('value', a_name);
+                    option.innerText = a_name;
+                    param.querySelector("select").appendChild(option);
+                }
+            }
+            params.appendChild(param);
+        }
+    });
 }

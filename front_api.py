@@ -1,3 +1,4 @@
+import json
 from flask import Blueprint, request
 from flask_caching import Cache
 
@@ -23,8 +24,14 @@ def update_output():
         return "Wrong file format", 400
 
     data = parse(upload_file.read().decode("utf-8"))
+    if "methods" in request.form:
+        data["methods"] = json.loads(request.form["methods"])
+    algorithm = request.form["algo"]
+    params = dict(
+        ((k, int(v)) for k, v in request.form.items() if not k in ("methods", "algo"))
+    )
     cache.set("graph_base", data)
-    send_json(data)
+    send_json(data, algorithm, params)
     return data, 200
 
 

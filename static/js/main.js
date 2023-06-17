@@ -1,13 +1,13 @@
 const algorithms = {
     "random": undefined,
-    "exchange/intra": undefined,
-    "exchange/inter": undefined,
-    "relocate/intra": undefined,
-    "relocate/inter": undefined,
-    "twoOpt/intra": undefined,
+    "exchange:intra": undefined,
+    "exchange:inter": undefined,
+    "relocate:intra": undefined,
+    "relocate:inter": undefined,
+    "twoOpt:intra": undefined,
     "tabouSearch": {
-        "nbIter": '<input type="number" min="0" name="%p" id="%p" default="500" />',
-        "tabouSize": '<input type="number" min="0" name="%p" id="%p" default="30" />',
+        "nbIter": '<input type="number" min="0" name="%p" id="%p" value="500" />',
+        "tabouSize": '<input type="number" min="0" name="%p" id="%p" value="30" />',
         "methods": '<select id="%p" name="%p" multiple>%o</select>',
     },
     "annealing": {
@@ -22,12 +22,30 @@ window.addEventListener("load", () => {
     var graph_base = null;
     var chart = null;
     document.querySelector("#upload").addEventListener("click", () => {
-        let file = document.querySelector("#file").files[0];
         let formData = new FormData();
+        let file = document.querySelector("#file").files[0];
+        if (file == undefined) return;
         formData.append("file", file);
+
+        let algo = document.querySelector("#algorithm").value;
+        formData.append("algo", algo);
+        if (algorithms[algo] !== undefined) {
+            for (let param_id of Object.keys(algorithms[algo])) {
+                let param = document.querySelector("#" + param_id);
+                if (param.type == "select-multiple") {
+                    let values = [];
+                    for (let option of param.selectedOptions) {
+                        values.push(option.value);
+                    }
+                    formData.append(param_id, JSON.stringify(values));
+                } else
+                    formData.append(param_id, param.value);
+            }
+        }
         fetch("/front/create_graph", { method: "POST", body: formData })
             .then((response) => { return response.json(); })
-            .then((data) => { graph_base = data; chart = create_graph(graph_base); });
+            .then((data) => { graph_base = data; chart = create_graph(graph_base); })
+            .catch(() => { return; });
     });
 
     setInterval(() => {
@@ -90,7 +108,6 @@ function update_graph(chart, data) {
     let clients = chart.data.datasets[0];
     chart.data.datasets.length = 0;
     chart.data.datasets.push(clients);
-    console.log(chart.data.datasets);
     for (let id = 0; id < data.routes.length; id++) {
         let route_data = {
             type: 'line',

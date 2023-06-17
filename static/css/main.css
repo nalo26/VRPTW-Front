@@ -1,6 +1,10 @@
+@font-face {
+    font-family: "Exo 2";
+    src: url("../Exo2-Regular.otf");
+}
+
 body {
-    margin: 0;
-    padding: 0;
+    font-family: "Exo 2", "Verdana", sans-serif;
 }
 
 p {

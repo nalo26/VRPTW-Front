@@ -64,6 +64,7 @@ function create_graph(base) {
     for (let p of base.clients) {
         ids.push(p.id_name);
     }
+    document.querySelector(".clients > p").innerHTML = ids.length;
 
     let chart = new Chart(ctx, {
         data: {
@@ -105,6 +106,7 @@ function create_graph(base) {
 
 function update_graph(chart, data) {
     document.querySelector(".fitness > p").innerHTML = data.fitness;
+    document.querySelector(".trucks > p").innerHTML = data.routes.length;
     let clients = chart.data.datasets[0];
     chart.data.datasets.length = 0;
     chart.data.datasets.push(clients);

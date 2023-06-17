@@ -33,3 +33,7 @@ select {
     height: 105px;
     vertical-align: middle;
 }
+
+.stat {
+    display: inline-block;
+}

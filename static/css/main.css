@@ -13,5 +13,23 @@ p {
 
 .settings {
     border: 1px solid black;
-    padding: 20px;
+    padding: 10 20;
+}
+
+.settings>*,
+#params>* {
+    margin: 5px;
+}
+
+#params {
+    margin: 0;
+}
+
+select {
+    width: 200px;
+}
+
+#methods {
+    height: 105px;
+    vertical-align: middle;
 }

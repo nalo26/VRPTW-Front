@@ -8,10 +8,10 @@ const algorithms = {
     "tabouSearch": {
         "nbIter": '<input type="number" min="0" name="%p" id="%p" value="500" />',
         "tabouSize": '<input type="number" min="0" name="%p" id="%p" value="30" />',
-        "methods": '<select id="%p" name="%p" multiple>%o</select>',
+        "methods": '<select id="%p" name="%p" multiple></select>',
     },
     "annealing": {
-        "methods": '<select id="%p" name="%p" multiple>%o</select>',
+        "methods": '<select id="%p" name="%p" multiple></select>',
     },
 }
 
@@ -147,10 +147,10 @@ function handle_algorithms() {
             param.classList.add("param");
             let label = document.createElement("label");
             label.setAttribute("for", pname);
-            label.innerText = pname.charAt(0).toUpperCase() + pname.slice(1);
+            label.innerText = pname.charAt(0).toUpperCase() + pname.slice(1) + " ";
             param.appendChild(label);
             param.innerHTML += phtml.replaceAll("%p", pname);
-            if (phtml.includes("%o")) {
+            if (phtml.includes("select")) {
                 for (let a_name of Object.keys(algorithms).slice(0, -2)) {
                     let option = document.createElement("option");
                     option.setAttribute('value', a_name);

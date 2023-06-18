@@ -1,9 +1,12 @@
 from flask import Flask, render_template
 from flask_caching import Cache
+import logging
 
 import front_api
 import back_api
 
+log = logging.getLogger("werkzeug")
+log.setLevel(logging.ERROR)
 
 app = Flask(__name__)
 app.register_blueprint(front_api.bp)
@@ -17,8 +20,8 @@ cache = Cache(
     },
 )
 
-front_api.init(cache)
-back_api.init(cache)
+front_api.init(cache, log)
+back_api.init(cache, log)
 
 
 @app.route("/")

@@ -7,11 +7,13 @@ from utils import send_json
 
 bp = Blueprint("front", __name__, url_prefix="/front")
 cache = None
+log = None
 
 
-def init(_cache: Cache):
-    global cache
+def init(_cache: Cache, log_):
+    global cache, log
     cache = _cache
+    log = log_
 
 
 @bp.route("/create_graph", methods=["POST"])
@@ -32,6 +34,7 @@ def update_output():
     )
     cache.set("graph_base", data)
     send_json(data, algorithm, params)
+    log.error("------------------------------------------")
     return data, 200
 
 

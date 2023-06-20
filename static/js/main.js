@@ -54,7 +54,7 @@ window.addEventListener("load", () => {
             .then((response) => { return response.json(); })
             .then((data) => { update_graph(chart, data); })
             .catch(() => { return; });
-    }, 100);
+    }, 1000);
 });
 
 function create_graph(base) {

@@ -17,12 +17,12 @@ def update_graph():
     data = request.get_json()
     remote_graphs = cache.get("remote_graphs")
     remote_graphs.append(data)
-    log.error(
-        "fitness: "
-        + str(data.get("fitness"))
-        + " / trucks: "
-        + str(len(data.get("routes")))
-    )
+    # log.error(
+    #     "fitness: "
+    #     + str(data.get("fitness"))
+    #     + " / trucks: "
+    #     + str(len(data.get("routes")))
+    # )
 
     cache.set("remote_graphs", remote_graphs)
     return "OK", 200

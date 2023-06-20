@@ -34,7 +34,7 @@ def update_output():
     )
     cache.set("graph_base", data)
     send_json(data, algorithm, params)
-    log.error("------------------------------------------")
+    # log.error("------------------------------------------")
     return data, 200
 
 
